@@ -164,29 +164,38 @@ print(f"Using device: {device}")
 # 2. กำหนดค่าไปป์ไลน์การค้นหาแบบไฮบริด
 ในขั้นตอนนี้ เราจะกำหนดค่าไปป์ไลน์การค้นหาแบบไฮบริดใน OpenSearch ไปป์ไลน์นี้รวมการค้นหาแบบดั้งเดิมที่ใช้คีย์เวิร์ดกับการค้นหาเวกเตอร์แบบความหมาย ช่วยให้ได้ผลลัพธ์ที่แม่นยำและเกี่ยวข้องกับบริบทมากขึ้น
 
+#### สำหรับ Linux/macOS (curl):
+
 ```bash
-curl -XPUT "http://localhost:9200/_search/pipeline/hybrid-search-pipeline" -H 'Content-Type: application/json' -d' \
-{ \
-  "description": "Pipeline for hybrid search", \
-  "phase_results_processors": [ \
-    { \
-      "normalization-processor": { \
-        "normalization": { \
-          "technique": "min_max" \
-        }, \
-        "combination": { \
-          "technique": "harmonic_mean", \
-          "parameters": { \
-            "weights": [ \
-              0.3, \
-              0.7 \
-            ] \
-          } \
-        } \
-      } \
-    } \
-  ] \
-}'
+curl -XPUT "http://localhost:9200/_search/pipeline/hybrid-search-pipeline" -H "Content-Type: application/json" -d"{\"description\": \"Pipeline for hybrid search\",\"phase_results_processors\": [{\"normalization-processor\": {\"normalization\": {\"technique\": \"min_max\"},\"combination\": {\"technique\": \"harmonic_mean\",\"parameters\": {\"weights\": [0.3,0.7]}}}}]}"
+```
+
+#### สำหรับ Windows (PowerShell):
+
+```powershell
+Invoke-WebRequest -Method PUT -Uri "http://localhost:9200/_search/pipeline/hybrid-search-pipeline" -Headers @{"Content-Type"="application/json"} -Body @"
+{
+  "description": "Pipeline for hybrid search",
+  "phase_results_processors": [
+    {
+      "normalization-processor": {
+        "normalization": {
+          "technique": "min_max"
+        },
+        "combination": {
+          "technique": "harmonic_mean",
+          "parameters": {
+            "weights": [
+              0.3,
+              0.7
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
+"@
 ```
 
 มาแยกการกำหนดค่านี้:
