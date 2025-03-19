@@ -108,7 +108,31 @@ conda list -n advrag
 
 ### การติดตั้งแพ็คเกจที่จำเป็น
 
-หลังจากเปิดใช้งานสภาพแวดล้อม Conda แล้ว คุณสามารถติดตั้งแพ็คเกจที่จำเป็นด้วยคำสั่ง pip:
+หลังจากเปิดใช้งานสภาพแวดล้อม Conda แล้ว คุณสามารถติดตั้งแพ็คเกจที่จำเป็นด้วยไฟล์ requirements.txt:
+
+```bash
+# ติดตั้งแพ็คเกจจากไฟล์ requirements.txt
+pip install -r requirements.txt
+```
+
+โดยเนื้อหาของไฟล์ requirements.txt ควรมีดังนี้:
+
+```
+llama-index
+llama-index-readers-elasticsearch
+llama-index-vector-stores-opensearch
+llama-index-embeddings-ollama
+ollama
+nest-asyncio
+llama-index-embeddings-huggingface
+torch
+fastapi
+uvicorn
+streamlit
+markdown
+```
+
+หรือคุณสามารถติดตั้งแต่ละแพ็คเกจโดยตรงด้วยคำสั่ง pip:
 
 ```bash
 pip install llama-index
@@ -118,9 +142,14 @@ pip install llama-index-embeddings-ollama
 pip install ollama
 pip install nest-asyncio
 pip install llama-index-embeddings-huggingface
+pip install torch
+pip install fastapi
+pip install uvicorn
+pip install streamlit
+pip install markdown
 ```
 
-หรือหากคุณใช้ Jupyter notebook คุณสามารถรันคำสั่งเหล่านี้โดยตรงในเซลล์:
+หากคุณใช้ Jupyter notebook คุณสามารถรันคำสั่งเหล่านี้โดยตรงในเซลล์:
 
 ```python
 %pip install llama-index
@@ -130,6 +159,11 @@ pip install llama-index-embeddings-huggingface
 %pip install ollama
 %pip install nest-asyncio
 %pip install llama-index-embeddings-huggingface
+%pip install torch
+%pip install fastapi
+%pip install uvicorn
+%pip install streamlit
+%pip install markdown
 ```
 
 นำเข้าโมดูลที่จำเป็นและตั้งค่าการกำหนดค่า:
@@ -355,6 +389,28 @@ index = VectorStoreIndex(
 - มันสร้าง embeddings สำหรับแต่ละโหนดเอกสารโดยใช้ embedding_model ที่ระบุ
 - จากนั้นจะจัดเก็บ embeddings เหล่านี้ใน OpenSearch vector store ที่กำหนดไว้ใน storage_context ของเรา OpenSearch จัดการการจัดเก็บและการทำดัชนีของ vector embeddings เหล่านี้อย่างมีประสิทธิภาพ
 - สุดท้าย Llama Index สร้างโครงสร้างที่ค้นหาได้ภายในของตัวเอง ซึ่ง: (a) สร้างดัชนีท้องถิ่นเพื่อจัดเก็บเมตาดาต้าเอกสารและการอ้างอิงไปยัง embeddings ใน OpenSearch (b) สร้างโครงสร้างข้อมูลที่มีประสิทธิภาพเพื่อเปิดใช้งานการค้นหาความคล้ายคลึงอย่างรวดเร็วและการเรียกค้นเอกสารที่เกี่ยวข้อง
+
+### 6.3 การรัน Script Embedding โดยตรง
+
+คุณสามารถบันทึกโค้ดทั้งหมดที่กล่าวมาข้างต้นเป็นไฟล์ Python (เช่น `embedding.py`) และรันโดยตรงจาก command line:
+
+```bash
+# ตรวจสอบให้แน่ใจว่าได้เปิดใช้งานสภาพแวดล้อม Conda ก่อน
+conda activate advrag
+
+# รันสคริปต์ embedding
+python embedding.py
+```
+
+หากคุณต้องการติดตามความคืบหน้าหรือแสดงข้อมูลเพิ่มเติม คุณสามารถเพิ่มพารามิเตอร์:
+
+```bash
+# รันด้วยการแสดงความคืบหน้าอย่างละเอียด
+python embedding.py --verbose
+
+# รันด้วยจำนวนเอกสารที่ระบุ (เช่น สำหรับการทดสอบ)
+python embedding.py --limit 10
+```
 
 หมายเหตุ: คุณสามารถตรวจสอบว่า embeddings ถูกจัดเก็บใน OpenSearch โดยการตรวจสอบดัชนี OpenSearch หลังจากการดำเนินการนี้ embeddings จะถูกเก็บไว้ในฟิลด์ที่ระบุเมื่อตั้งค่า OpenSearchVectorClient (โดยทั่วไปคือ "embedding")
 
