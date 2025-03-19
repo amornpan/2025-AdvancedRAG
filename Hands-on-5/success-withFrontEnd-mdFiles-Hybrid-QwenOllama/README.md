@@ -76,8 +76,51 @@ docker run -e OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx512m" -e discovery.type="single
 
 คำสั่งนี้จะรัน OpenSearch ในคอนเทนเนอร์ Docker และทำให้สามารถเข้าถึงได้ที่พอร์ต 9200
 
-## 1.4 Python Libraries
-ตั้งค่าสภาพแวดล้อม Python: ตอนนี้ เราจะตั้งค่าสภาพแวดล้อม Python หากคุณใช้ Jupyter notebook คุณสามารถรันคำสั่งเหล่านี้โดยตรงในเซลล์:
+## 1.4 Python Libraries และสภาพแวดล้อม
+
+คุณสามารถใช้ Conda เพื่อสร้างและจัดการสภาพแวดล้อม Python แยกสำหรับโปรเจกต์นี้ ซึ่งจะช่วยหลีกเลี่ยงปัญหาความขัดแย้งของแพ็คเกจกับโปรเจกต์อื่นๆ
+
+### การใช้งาน Conda
+
+```bash
+# สร้างสภาพแวดล้อมใหม่ชื่อ advrag ด้วย Python 3.10
+conda create -n advrag python=3.10
+
+# เริ่มต้นใช้งาน conda ในเทอร์มินัลปัจจุบัน (รันครั้งแรกหลังจากติดตั้ง)
+conda init
+
+# เปิดใช้งานสภาพแวดล้อม advrag
+conda activate advrag 
+
+# ปิดการใช้งานสภาพแวดล้อมปัจจุบัน
+conda deactivate
+
+# แสดงรายการแพ็คเกจที่ติดตั้งในสภาพแวดล้อม advrag
+conda list -n advrag
+```
+
+คำอธิบายคำสั่ง:
+- `conda create -n advrag python=3.10`: สร้างสภาพแวดล้อมเสมือนใหม่ชื่อ "advrag" ที่ใช้ Python เวอร์ชัน 3.10
+- `conda init`: กำหนดค่า shell เพื่อให้สามารถใช้คำสั่ง `conda activate` ได้ (ต้องรันเพียงครั้งเดียวหลังจากติดตั้ง Conda)
+- `conda activate advrag`: เปิดใช้งานสภาพแวดล้อม advrag ทำให้คำสั่ง Python ทั้งหมดจะใช้จากสภาพแวดล้อมนี้
+- `conda deactivate`: ออกจากสภาพแวดล้อมปัจจุบันและกลับไปยังสภาพแวดล้อมฐาน
+- `conda list -n advrag`: แสดงรายการแพ็คเกจทั้งหมดที่ติดตั้งในสภาพแวดล้อม advrag
+
+### การติดตั้งแพ็คเกจที่จำเป็น
+
+หลังจากเปิดใช้งานสภาพแวดล้อม Conda แล้ว คุณสามารถติดตั้งแพ็คเกจที่จำเป็นด้วยคำสั่ง pip:
+
+```bash
+pip install llama-index
+pip install llama-index-readers-elasticsearch
+pip install llama-index-vector-stores-opensearch
+pip install llama-index-embeddings-ollama
+pip install ollama
+pip install nest-asyncio
+pip install llama-index-embeddings-huggingface
+```
+
+หรือหากคุณใช้ Jupyter notebook คุณสามารถรันคำสั่งเหล่านี้โดยตรงในเซลล์:
 
 ```python
 %pip install llama-index
